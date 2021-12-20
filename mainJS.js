@@ -18,11 +18,11 @@ document.addEventListener('DOMContentLoaded', function(){
     const dataSet = [...jsonGDP.data]/*create separate array for data*/
 
 
-    console.log(dataSet.length);
+    console.log(dataSet[0]);
 
     
     
-    const w = 500;
+    const w = 800;
     const h = 500;
     const padding = 60;
     
@@ -45,8 +45,11 @@ document.addEventListener('DOMContentLoaded', function(){
     .append("rect")
     .attr("x", (d, index) => xScale(index))
     .attr("y",(d) => yScale(d[1]))
-    .attr("width", 5)
-    .attr("height", h);
+    .attr("width", (d)=>{return w / dataSet.length-0.5;})/*divide svg width by number of data points, reduce by 0.5 (to form a gap between bars) and that will be the width of a bar*/
+    .attr("height", (d)=>h-yScale(d[1])-padding)/*SITA PASIAISKINTI REIKIA...*/
+
+    .append("title")
+    .text((d)=>d[1]);
     
     const xAxis = d3.axisBottom(xScale);
     const yAxis = d3.axisLeft(yScale);
