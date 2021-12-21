@@ -9,18 +9,7 @@ document.addEventListener('DOMContentLoaded', function(){
     req.onload = function(){
     const jsonGDP = JSON.parse(req.responseText);
 
-    /*for constructing html element to be "put" in root div (DEBUG)*/
-    let html = "test";
-    
-    
-    document.getElementById('root').innerHTML = html;
-
     const dataSet = [...jsonGDP.data]/*create separate array for data*/
-
-
-    console.log(dataSet[0]);
-
-    
     
     const w = 800;
     const h = 500;
@@ -34,10 +23,14 @@ document.addEventListener('DOMContentLoaded', function(){
            .domain([0, d3.max(dataSet, (d)=>d[1])])
            .range([h - padding, padding]);
     
-    const svg = d3.select("#bar-chart")
+    const svg = d3.select("#barChart")
         .append("svg")
         .attr("width", w)
         .attr("height", h)
+
+
+       console.log("first element in dataset: " + dataSet[0]);/*DEBUG*/
+       console.log("scaled second number in first element: " + yScale(dataSet[0][1]));/*DEBUG*/
     
     svg.selectAll("rect")
     .data(dataSet)
@@ -49,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function(){
     .attr("height", (d)=>h-yScale(d[1])-padding)/*SITA PASIAISKINTI REIKIA...*/
 
     .append("title")
-    .text((d)=>d[1]);
+    .text((d)=>{return "$" + d[1];});
     
     const xAxis = d3.axisBottom(xScale);
     const yAxis = d3.axisLeft(yScale);
